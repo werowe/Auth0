@@ -52,7 +52,7 @@ Node.js/Express backend for token generation.
 Note that this sample application is intended to illustrate the Circle security elements in a simple and condensed way. Therefore, many features that are necessary for production, such as error handling and configuration files, have been omitted.
 
 
-To setup the Express app, start by typing <code>npm init</code> from the command line. Next, in the same direcotry where
+To setup the Express app, start by typing <code>npm init</code> from the command line. Next, in the same directory where
 you ran init, install Express running <code>npm install express</code>
 
 ### Basic server.js file
