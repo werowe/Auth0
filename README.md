@@ -11,7 +11,6 @@ The application will:
 - Check if an Auth0 Access Token is stored in the Circle Service and perform the login process, or redirect the user at the first login and store the Access Token securely.
 - Display user authenticated information (via JWT)
 
-
 To develop the application, we need to follow some steps:
 
 
