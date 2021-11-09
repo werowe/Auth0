@@ -1,0 +1,63 @@
+.flex-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container-box {
+    height: 300px;
+  }
+  
+  .content-box {
+    color: white;
+    text-align: center;
+    width: 200px;
+  }
+
+ .title {
+    color: grey;
+    font-size: 32px;
+    margin-top: 50px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+ 
+ a {
+     text-decoration: none;
+     font-size: 22px;
+     color: black;
+ }
+ 
+ h2 {
+     font-family: Arial, Helvetica, sans-serif;
+     text-align: center;
+ }
+ 
+
+ .loader-cont{
+    position:relative; height: 100%;width:100%;
+ }
+
+ .loader-cont img{
+    position:absolute;
+    top:300px;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    width:120px;
+ }
+
+ #photo{
+    width:100%;
+ }
+
+ .un
+ button:hover,
+ a:hover {
+     opacity: 0.7;
+ }
+
+ .codes{
+     display: none;
+ }

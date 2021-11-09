@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <script src="https://internal.gocircle.ai/api/demo/lib/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://internal.gocircle.ai/api/demo/lib/bootstrap/bootstrap.bundle.min.js"></script>
+    <script>
+        var timestamp = new Date().getTime();
+        document.write(`\x3Cscript src="https://internal.gocircle.ai/api/gocircle.ai-bundle.js?t=${timestamp}">\x3C/script>`);
+        document.write(`\x3Cscript src="https://internal.gocircle.ai/api/gocircle.ai.js?t=${timestamp}">\x3C/script>`);
+    </script>
+
+    <script src="js/util.js"></script>
+    <script src="js/const.js"></script>
+    <script src="js/app.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="https://internal.gocircle.ai/api/demo/lib/bootstrap/bootstrap.min.css">
+
+
+
+</head>
+
+<body>
+
+    <div id="title" class="title">
+        <h2>You are logged in as</h2>
+    </div>
+    <center>
+        <div class="card" style="width: 18rem;">
+            <div class="profile">
+                <img id="photo" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h1 id="user"></h1>
+                    <p id="email"></p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-primary" id="login" style="width:100%"></i>Login</button>
+                <button class="btn btn-danger" id="logout" style="margin-right: 20px;">Logout</button>
+                <button class="btn btn-warning" id="reauth">Reauthenticate</button>
+            </div>
+
+
+        </div>
+    </center>
+
+
+    <div class="modal fade" id="notRunningModal" tabindex="-1" aria-labelledby="notRunningModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notRunningModalLabel">Circle is not running</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <h5>Please download Circle Service to enable secure token storage</h5>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="loadingModal" tabindex="-1" aria-labelledby="loadingModal" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Loading...</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <img src="https://internal.gocircle.ai/api/demo/img/loading.gif" alt="Loading"
+                        style="height: 64px;">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="enterCodesModal" tabindex="-1" aria-labelledby="enterCodesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="enterCodesModalLabel">User is Locked</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h4>Enter the 2 codes</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label for="code1" class="form-label">Code 1</label>
+                                <input type="email" class="form-control" id="code1">
+                                <div class="form-text"></div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="code2" class="form-label">Code 2</label>
+                                <input type="email" class="form-control" id="code2">
+                            </div>
+                        </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-warning"
+                        id="resend">Resend</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button"
+                        class="btn btn-primary" id="unlock">Check</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+
+    // Please take a look at the file /public/js/const.js. 
+    // It contains the configuration constants
+
+    window.onload = async () => {
+
+        // show the loading
+        showHideLoader(true);
+
+        // Check if the user is locked
+        const statusJson = await checkUserIsLocked();
+
+        if (statusJson.running === false) {
+            showHideLoader(false);
+            setTitle("Unable to connect to the Circle service. <br>Please check if the service is running.");
+            $("#login").hide();
+            return;
+        }
+
+        if (statusJson.locked === true) {
+            // Displays the screen where the user can enter the 2 unlock codes.
+            hideProfileAndEnterTwoCodes();
+            return;
+        }
+
+        // Check if the token "auth0-demo" is stored in the circle "auth0-demo"
+        // and log in to the service.
+
+        let token = await getCircleSavedToken("auth0-demo", "auth0-token");
+
+        hideButtons();
+
+        if (token) {
+            const tokenData = parseJwt(token);
+            // show profile
+            displayProfile(tokenData);
+        } else {
+            $(".card").show();
+            $("#login").show();
+            showHideLoader(false);
+        }
+    }
+
+    $("#login").on("click", function () {
+        showHideLoader(true);
+        tryToLogin();
+    });
+
+    $("#logout").on("click", function () {
+        showHideLoader(true);
+        reset();
+    });
+
+    $("#reauth").on("click", function () {
+        hideProfileAndLock();
+    });
+
+    $("#resend").on("click", function () {
+        hideProfileAndLock();
+    });
+
+
+    showCard(false);
+    $(".card").hide();
+    hideButtons();
+    setTitle("");
+
+
+
+</script>
+
+</html>
