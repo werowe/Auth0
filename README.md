@@ -2,14 +2,14 @@
 # Getting Started
 
 
-In this article, you will learn how to include Auth0 login features in Circle Service. It is a single application page that uses Node.js/Express as the backend and HTML and JS as the frontend. Circle Service handles the entire authentication process and securely stores the access token.
+In this article, you will learn how to include Auth0 login features in Circle Service. It is a single application page that uses Node.js/Express for the backend and HTML with JS for the frontend. Circle Service handles the entire authentication process and securely stores the access/refresh token.
 
 
 The application will:
 
 - Check if the Circle Service is running and connect to it.
-- Check if an Auth0 Access Token is stored in the Circle Service and perform the login process, or redirect the user at the first login and store the Access Token securely.
-- Display user authenticated information (via JWT)
+- Check if an Auth0 Refresh Token is stored in the Circle Service and perform the login process by requestion the Access Token, or redirect the user on the first login and store the Refresh Token securely.
+- Display the authenticated user information (via JWT)
 
 To develop the application, we need to follow some steps:
 
@@ -510,7 +510,7 @@ async function getCircleSavedToken(tokenCircle, tokenId) {
 ```
  
 
-If no token is stored in Circle, the user must be redirected to Auth0 authentication. After logging in, Auth0 redirects the user to the callback page. At this point, the authorization code is exchanged for a token and the token is stored in the Circle service.
+If no token is stored in Circle, the user must be redirected to Auth0 authentication. After logging in, Auth0 redirects the user to the callback page. At this point, the authorization code is exchanged for a token and the token is stored in Circle service.
 
 The function <code>firstLogin</code> redirects the user to the Auth0 login page. Above the firstLogin content:
 
