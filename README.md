@@ -63,8 +63,8 @@ you ran init, install Express running <code>npm install express</code>
   const path = require('path');
   const app = express();
 
-  //express.static serves the client of /public/index.html. This file contains all the
-  //HTML code and JS, so everything is easier to understand.
+  // express.static serves the client of /public/index.html. This file contains all the
+  // HTML code and JS, so everything is easier to understand.
 
   app.use(express.static(path.join(__dirname, "public")));
 
@@ -74,7 +74,7 @@ you ran init, install Express running <code>npm install express</code>
 ```
 
 We need to add an endpoint to our server that will generate and return Circle's token, which will be used by our client to make Circle API calls.
-For this purpose, we create a file called tokenGen.js.
+For this purpose, we create a file called token-gen.js.
 In this file, we add the following code:
 
 
@@ -144,7 +144,7 @@ Now we add the endpoint to the server.js file. Below you can see the server.js f
 ```
   const express = require('express');
   const path = require('path');
-  const circleToken = require('./tokenGen.js');
+  const circleToken = require('./token-gen.js');
   const app = express();
 
   app.get('/circle-token', async function(req, res) {
@@ -427,7 +427,7 @@ The function <code>checkUserIsLocked</code> is defined in the file /public/js/ap
 }
 
 ``` 
-Once the Circle service is running and connected, the next step is to use the <code>getCircleSavedToken</code> function to check if a token named "auth0-demo" exists in the Circle.
+Once the Circle service is running and connected, next use the <code>getCircleSavedToken</code> function, which checks to see if a token named "auth0-demo" exists in Circle, and log in to the service.
 
 
 ```
@@ -513,7 +513,7 @@ async function getCircleSavedToken(tokenCircle, tokenId) {
 
 If no token is stored in Circle, the user must be redirected to Auth0 authentication. After logging in, Auth0 redirects the user to the callback page. At this point, the authorization code is exchanged for a token and the token is stored in the Circle service.
 
-The function firstLogin redirects the user to the Auth0 login page. Above the firstLogin content:
+The function <code>firstLogin</code> redirects the user to the Auth0 login page. Above the firstLogin content:
 
 
 ```
