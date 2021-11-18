@@ -16,7 +16,7 @@ To develop the application, we need to follow some steps:
 
 ## 1. Create a Circle Service Account
 
- Before you start developing for Circle Service, you need to create your Circle account. You can register by clicking <a href="https://gocircle.ai/get-the-circle-api">here</a>. After registering, you will receive an email with this information:
+ Before you start developing for Circle Service, you need to create your Circle account. You can register by clicking <a href="https://gocircle.ai/get-the-circle-api/?lid=9">here</a>. After registering, you will receive an email with this information:
 
   - CustomerCode
   - AuthCode
